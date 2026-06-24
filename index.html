@@ -2470,13 +2470,32 @@ function R(){
 
 // ─── DOWNLOAD ────────────────────────────────────────────────────────────────
 function dl(){
-  const el=document.getElementById('pr').firstElementChild;
-  if(!el) return;
-  html2canvas(el,{scale:3,backgroundColor:null,useCORS:true,allowTaint:true,logging:false}).then(canvas=>{
+  // Capture only the inner screen (.pi), not the bezel
+  const screen=document.querySelector('#pr .pi');
+  const frame=document.getElementById('pr').firstElementChild;
+  const el=screen||frame;
+  if(!el){showToast('Nothing to download yet','error');return;}
+  const toolNames={imessage:'iMessage',whatsapp:'WhatsApp',wacall:'WA-Call',instagram:'Instagram-DM',igpost:'Instagram-Post',iglive:'Instagram-Live',twitter:'Twitter',snapchat:'Snapchat',telegram:'Telegram',tgcall:'Telegram-Call',linkedin:'LinkedIn',email:'Gmail',notification:'Notification',tiktok:'TikTok',phonecall:'Phone-Call',groupcall:'Group-Call',calllog:'Call-Log',incomingcall:'Incoming-Call',facebook:'Facebook-DM',fbpost:'Facebook-Post',fblive:'Facebook-Live','sms-iphone':'iPhone-SMS','sms-android':'Android-SMS'};
+  const fname=(toolNames[cur]||cur)+'-screenshot';
+  showToast('Saving screenshot…');
+  html2canvas(el,{
+    scale:3,
+    backgroundColor:'#ffffff',
+    useCORS:true,
+    allowTaint:true,
+    logging:false,
+    imageTimeout:0,
+    removeContainer:true
+  }).then(canvas=>{
     const a=document.createElement('a');
-    a.download='prankonly-'+cur+'.png';
-    a.href=canvas.toDataURL('image/png');
+    a.download=fname+'.png';
+    a.href=canvas.toDataURL('image/png',1.0);
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
+    showToast('✓ Saved as '+fname+'.png');
+  }).catch(err=>{
+    showToast('Download failed: '+err.message,'error');
   });
 }
 

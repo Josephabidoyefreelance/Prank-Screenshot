@@ -2469,10 +2469,8 @@ function R(){
 
 // ─── DOWNLOAD ────────────────────────────────────────────────────────────────
 function dl(){
-  const screen=document.querySelector('#pr .pi');
-  const frame=document.getElementById('pr').firstElementChild;
-  const el=screen||frame;
-  if(!el){showToast('Nothing to download yet','error');return;}
+  const el=document.querySelector('#pr .pi');
+  if(!el){showToast('Nothing to download yet — choose a screen first','error');return;}
   const toolNames={imessage:'iMessage',whatsapp:'WhatsApp',wacall:'WA-Call',instagram:'Instagram-DM',igpost:'Instagram-Post',iglive:'Instagram-Live',twitter:'Twitter',snapchat:'Snapchat',telegram:'Telegram',tgcall:'Telegram-Call',linkedin:'LinkedIn',email:'Gmail',notification:'Notification',tiktok:'TikTok',phonecall:'Phone-Call',groupcall:'Group-Call',calllog:'Call-Log',incomingcall:'Incoming-Call',facebook:'Facebook-DM',fbpost:'Facebook-Post',fblive:'Facebook-Live','sms-iphone':'iPhone-SMS','sms-android':'Android-SMS'};
   const fname=(toolNames[cur]||cur)+'-PrankOnly';
   showToast('Saving image…');
